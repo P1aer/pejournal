@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100" viewBox="0 0 500 500">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        fill-rule: evenodd;
+      }
+
+      .cls-1 {
+        filter: url(#filter);
+      }
+
+      .cls-2 {
+        filter: url(#filter-2);
+      }
+
+      .cls-3 {
+        stroke: #000;
+        stroke-width: 1px;
+      }
+    </style>
+    <filter id="filter" x="46.813" y="316.094" width="189.188" height="111.594" filterUnits="userSpaceOnUse">
+      <feFlood result="flood" flood-color="#e0a859"/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" in2="SourceGraphic"/>
+    </filter>
+    <filter id="filter-2" x="121.438" y="316.094" width="94" height="111.906" filterUnits="userSpaceOnUse">
+      <feFlood result="flood" flood-color="#bf9150"/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <path id="_13_1" data-name="13 1" class="cls-1" d="M244.881,427.7H135.455L46.821,316.081H155.152Q200.017,371.887,244.881,427.7Z"/>
+  <path id="_13_1_копия" data-name="13 1 копия" class="cls-2" d="M215.43,428.107H163.5l-42.066-112.02h51.414Z"/>
+  <path id="Фигура_318_1" data-name="Фигура 318 1" class="cls-3" d="M236.536,427.5H154.5V72.5H322.575a132.448,132.448,0,0,1,41.018,11c20.742,9.346,36.712,22.366,48.022,37,22.645,29.3,27.074,64.869,24.011,92-2.553,22.614-10.027,41.254-20.009,56a121.712,121.712,0,0,1-50.023,42,124.812,124.812,0,0,1-42.019,11H236.536v106Zm0-282v103h65.03a45.881,45.881,0,0,0,6,0,49.461,49.461,0,0,0,30.014-13c10.875-10.077,15.33-24.5,16.007-37a50.946,50.946,0,0,0-2-18,49.908,49.908,0,0,0-49.022-35h-66.03Z"/>
+</svg>

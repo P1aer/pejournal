@@ -8,6 +8,7 @@ import {
     FormatListBulletedOutlined as ListIcon,
 } from '@material-ui/icons';
 import Link from "next/link";
+import {useRouter} from "next/router";
 
 
 const menu = [
@@ -18,6 +19,7 @@ const menu = [
 ];
 
 const LeftMenu:FC = () => {
+    const router = useRouter()
     return (
         <div className={styles.menu}>
             <ul>
@@ -25,7 +27,7 @@ const LeftMenu:FC = () => {
                     <li key={obj.path}>
                         <Link href={obj.path}>
                             <a>
-                                <Button>
+                                <Button variant={router.asPath === obj.path ? "contained" : undefined}>
                                     {obj.icon}
                                     {obj.text}
                                 </Button>

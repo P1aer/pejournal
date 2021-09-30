@@ -6,14 +6,14 @@ import styles from './Comment.module.scss';
 
 interface CommentPostProps {
     user: {
-        fullname: string;
-        avatarUrl: string;
+        name: string;
+        avatar: string;
     };
     text: string;
-    createdAt: string;
+    created: string;
 }
 
-export const Comment: React.FC/*<CommentPostProps>*/ = (/*{ user, text, createdAt }*/) => {
+export const Comment: React.FC<CommentPostProps>= ({ user, text, created }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event:any) => {
@@ -27,12 +27,15 @@ export const Comment: React.FC/*<CommentPostProps>*/ = (/*{ user, text, createdA
     return (
         <div className={styles.comment}>
             <div className={styles.userInfo}>
-                <img src="https://cs5.pikabu.ru/post_img/2014/12/13/12/1418502717_1446953895.gif" alt="avatar"/>
-                <b>Zhabka</b>
-                <span>???</span>
+                <img
+                    src={user.avatar}
+                    alt="Avatar"
+                />
+                <b>{user.name}</b>
+                <span>{created}</span>
             </div>
             <Typography className={styles.text}>
-                Однажды я шел по улице а затем пришел домой, как бы держу в курсе все. Спасибо за внимание
+                {text}
             </Typography>
             <span className={styles.replyBtn}>Ответить</span>
             <IconButton onClick={handleClick}>
@@ -48,5 +51,6 @@ export const Comment: React.FC/*<CommentPostProps>*/ = (/*{ user, text, createdA
                 <MenuItem onClick={handleClose}>Редактировать</MenuItem>
             </Menu>
         </div>
+
     );
 };

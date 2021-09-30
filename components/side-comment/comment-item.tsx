@@ -5,7 +5,7 @@ import Link from 'next/link';
 interface CommentItemProps {
     user: {
         id: number;
-        fullname: string;
+        name: string;
     };
     text: string;
     post: {
@@ -20,16 +20,16 @@ export const CommentItem: React.FC<CommentItemProps> = ({ user, text, post }) =>
             <div className={styles.userInfo}>
                 <img
                     src="https://leonardo.osnova.io/598fc957-a3f6-598c-b6f9-a033c3941d12/-/scale_crop/64x64/-/format/webp/"
-                    alt="User avatar"
+                    alt="U  ser avatar"
                 />
                 <Link href={`/profile/${user.id}`}>
                     <a>
-                        <b>{user.fullname}</b>
+                        <b>{user.name}</b>
                     </a>
                 </Link>
             </div>
             <p className={styles.text}>{text}</p>
-            <Link href={`/news/${user.id}`}>
+            <Link href={`/news/${post.id}`}>
                 <a>
                     <span className={styles.postTitle}>{post.title}</span>
                 </a>
