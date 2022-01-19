@@ -8,6 +8,12 @@ import { theme } from '../theme';
 import '../styles/globals.scss';
 import 'macro-css';
 import type { AppProps } from 'next/app'
+import { wrapper} from "../redux/store";
+import {parseCookies} from "nookies";
+import {Api} from "../utils/api";
+import {setUserData} from "../redux/slices/user";
+import {Component} from "react";
+
 function MyApp({ Component, pageProps }: AppProps) {
     return (
         <>
@@ -22,12 +28,28 @@ function MyApp({ Component, pageProps }: AppProps) {
             </Head>
             <MuiThemeProvider theme={theme}>
                 <CssBaseline />
-                <Header />
-                <Component {...pageProps} />
+                    <Header />
+                    <Component {...pageProps} />
             </MuiThemeProvider>
         </>
     );
 }
 
-export default MyApp;
+MyApp.getInitialProps = wrapper.getInitialAppProps( store=> async( {ctx, Component}) => {
+    try {
+        const {token} = parseCookies(ctx)
+        const data =  await Api(ctx).user.getProfile()
+        store.dispatch(setUserData(data))
+    } catch (e) {
+        console.log(e)
+    }
+    return {
+        pageProps: {
+            ...(Component.getInitialProps ? await Component.getInitialProps({ ctx, store}): {}),
+        }
+    }
+})
+
+export default wrapper.withRedux(MyApp);
+
 

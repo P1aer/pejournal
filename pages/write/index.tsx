@@ -1,8 +1,7 @@
-import type { NextPage } from 'next'
-import {MainLayout} from "../layouts/MainLayout";
+import type { NextPage} from 'next'
+import {MainLayout} from "../../layouts/MainLayout";
 import React from "react";
-import { TextField } from "@material-ui/core";
-import {WriteForm} from "../components/write-form";
+import {WriteForm} from "../../components/write-form";
 
 const Home: NextPage = () => {
     return (
@@ -11,5 +10,6 @@ const Home: NextPage = () => {
         </MainLayout>
     )
 }
+
 
 export default Home

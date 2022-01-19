@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import { Paper, Button, IconButton, Avatar } from "@material-ui/core"
+import {Paper, Button, IconButton, Avatar, List, ListItem} from "@material-ui/core"
 import Link from 'next/link';
 import SearchIcon from "@material-ui/icons/Search"
 import SmsOutlinedIcon from "@material-ui/icons/SmsOutLined"
@@ -9,9 +9,30 @@ import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone'
 import styles from "./header.module.scss"
 import {AuthDialog} from "../auth-dialog";
 import  {AccountCircleOutlined} from "@material-ui/icons"
+import {useAppSelector} from "../../redux/hooks";
+import {selectUserData} from "../../redux/slices/user";
+import {PostItem} from "../../utils/api/types";
+import {Api} from "../../utils/api";
 
 const Header:FC = () => {
+    const userDate = useAppSelector(selectUserData);
     const [authVisible, setAuthVisible] = React.useState(false);
+    const [searchVisible, setsSearchVisible] = React.useState(false);
+    const [searchValue, setSearchValue] = React.useState('');
+    const [posts, setPosts] = React.useState<PostItem[]>([]);
+
+    const handleChangeInput = async (e:any) => {
+        setSearchValue(e.target.value);
+        setsSearchVisible(true)
+        try {
+            const { posts } = await Api().post.search({ title: e.target.value });
+            console.log(posts, 'итог')
+            setPosts(posts);
+        } catch (e) {
+            console.warn(e);
+        }
+    };
+
 
     const openAuthDialog = () => {
         setAuthVisible(true);
@@ -21,6 +42,10 @@ const Header:FC = () => {
         setAuthVisible(false);
     };
 
+    React.useEffect(() => {
+        if (authVisible && userDate) {}
+        setAuthVisible(false);
+    },[userDate])
     return (
         <Paper classes={{ root: styles.root }} elevation={0}>
 
@@ -36,7 +61,24 @@ const Header:FC = () => {
 
                 <div className={styles.searchBlock}>
                     <SearchIcon/>
-                    <input placeholder="Поиск"/>
+                    <input value={searchValue} onChange={handleChangeInput} placeholder="Поиск"/>
+                    {(posts.length > 0 && searchVisible) && (
+                        <Paper className={styles.searchBlockPopup}>
+                            <List>
+                                {posts.map((obj) => (
+                                    <Link key={obj.id} href={`/news/${obj.id}`} >
+                                        <a>
+                                            <ListItem button onClick={() => {
+                                                setsSearchVisible(false)
+                                                setSearchValue('')
+                                                setPosts([])
+                                            }}>{obj.title}</ListItem>
+                                        </a>
+                                    </Link>
+                                ))}
+                            </List>
+                        </Paper>
+                    )}
                 </div>
                 <Link href="/write">
                     <a>
@@ -54,7 +96,7 @@ const Header:FC = () => {
             <IconButton>
                 <NotificationsNoneIcon/>
             </IconButton>
-{/*                <Link href={"/profile/1"}>
+                { userDate ? <Link href={"/profile/1"}>
                     <a className="d-flex align-center">
                         <Avatar
                             className={styles.avatar}
@@ -63,11 +105,11 @@ const Header:FC = () => {
                         />
                         <ArrowIcon/>
                     </a>
-                </Link>*/}
-                <div className={styles.loginButton} onClick={openAuthDialog}>
+                </Link> :  <div className={styles.loginButton} onClick={openAuthDialog}>
                     <AccountCircleOutlined />
                     Войти
-                </div>
+                </div>}
+
 
         </div>
             <AuthDialog onClose={closeAuthDialog} visible={authVisible}/>

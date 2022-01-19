@@ -5,31 +5,26 @@ import UserAddIcon from '@material-ui/icons/PersonAddOutlined';
 
 import styles from "./full-post.module.scss"
 import {PostActions} from "../post-actions";
+import {OutputData} from "@editorjs/editorjs";
 
-const FullPost:FC = () => {
+interface FullPostProps {
+    title:string;
+    blocks:  OutputData["blocks"];
+}
+
+const FullPost:FC<FullPostProps> = ({title, blocks}) => {
      return (
          <Paper elevation={0} className={styles.paper}>
              <div className="container" style={{margin: '0 auto', width: 680}}>
                  <Typography variant="h4" className={styles.title}>
-                     Superjet, летящий из Волгограда в Москву, подал сигнал бедствия. Возможно, в полете
-                     произошла разгерметизация
+                     {title}
                  </Typography>
-                 <Typography>
-                     Самолет SSJ100, летящий из Волгограда в Москву, подал сигнал бедствия. Об этом сообщает
-                     «Интерфакс» со ссылкой на информированный источник. По данным источника, самолет резко
-                     снизился над Тамбовской областью.
-                 </Typography>
-                 <Typography>
-                     По данным источника, самолет резко снизился над Тамбовской областью. Возможной причиной
-                     этого собеседник агентства назвал разгерметизацию.
-                 </Typography>
-                 <Typography>Самолет продолжает полет на высоте примерно 3000 метров.</Typography>
-                 <Typography>
-                     Источник не уточнил названия авиакомпании и номера рейса. Судя по данным Flightradar24,
-                     сейчас в небе находится один SSJ100, летящий в Москву из Волгограда. Это — самолет
-                     «Аэрофлота», выполняющий рейс SU6416. На момент написания заметки он уже пересек
-                     Тамбовскую область и подлетает к Москве.
-                 </Typography>
+                 <div className={styles.text}>
+                     {
+                         blocks.map(obj => <Typography key={obj.id} dangerouslySetInnerHTML={{__html:obj.data.text}}/> )
+                     }
+                 </div>
+
                  <div style={{ width: 250, marginLeft: -14 }}>
                      <PostActions/>
                  </div>

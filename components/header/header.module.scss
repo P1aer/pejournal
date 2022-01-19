@@ -24,6 +24,12 @@
   letter-spacing: 0 !important;
   min-width: 40px !important;
 }
+.searchBlockPopup {
+  position: absolute !important;
+  top: 40px;
+  width: 310px;
+}
+
 .searchBlock {
   position: relative;
   margin-right: 15px;

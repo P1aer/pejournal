@@ -1,19 +1,22 @@
 import React from 'react';
-import { Typography, IconButton, MenuItem, Menu } from '@material-ui/core';
+import {Typography, IconButton, MenuItem, Menu, Avatar} from '@material-ui/core';
 import MoreIcon from '@material-ui/icons/MoreHorizOutlined';
 
 import styles from './Comment.module.scss';
+import {ResponseUser} from "../../utils/api/types";
+import {Api} from "../../utils/api";
 
 interface CommentPostProps {
-    user: {
-        name: string;
-        avatar: string;
-    };
+    id: number;
+    user: ResponseUser;
     text: string;
-    created: string;
+    createdAt: string;
+    currUser?: number;
+    onRemove: (id: number) => void;
+
 }
 
-export const Comment: React.FC<CommentPostProps>= ({ user, text, created }) => {
+export const Comment: React.FC<CommentPostProps>= ({ id, user, text, createdAt, currUser, onRemove }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event:any) => {
@@ -23,33 +26,45 @@ export const Comment: React.FC<CommentPostProps>= ({ user, text, created }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const handleClickRemove = async () => {
+        if (window.confirm('Удалить комментарий?')) {
+            try {
+                await Api().comment.remove(id);
+                onRemove(id);
+            } catch (err) {
+                console.warn('Error remove comment', err);
+                alert('Не удалось удалить комментарий');
+            } finally {
+                handleClose();
+            }
+        }
+    };
+
 
     return (
         <div className={styles.comment}>
             <div className={styles.userInfo}>
-                <img
-                    src={user.avatar}
-                    alt="Avatar"
-                />
+                <Avatar style={{marginRight:10}}> {user.name[0]}</Avatar>
                 <b>{user.name}</b>
-                <span>{created}</span>
+                <span>{createdAt}</span>
             </div>
             <Typography className={styles.text}>
                 {text}
             </Typography>
-            <span className={styles.replyBtn}>Ответить</span>
-            <IconButton onClick={handleClick}>
-                <MoreIcon />
-            </IconButton>
-            <Menu
-                anchorEl={anchorEl}
-                elevation={2}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                keepMounted>
-                <MenuItem onClick={handleClose}>Удалить</MenuItem>
-                <MenuItem onClick={handleClose}>Редактировать</MenuItem>
-            </Menu>
+            {user.id === currUser && (<>
+                <IconButton onClick={handleClick}>
+                    <MoreIcon />
+                </IconButton>
+                <Menu
+                    anchorEl={anchorEl}
+                    elevation={2}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                    keepMounted>
+                    <MenuItem onClick={handleClickRemove}>Удалить</MenuItem>
+                    <MenuItem onClick={handleClose}>Редактировать</MenuItem>
+                </Menu> </>)}
+
         </div>
 
     );

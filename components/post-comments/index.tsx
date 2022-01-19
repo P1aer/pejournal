@@ -1,12 +1,30 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Divider, Paper, Tab, Tabs, Typography} from "@material-ui/core";
 import {Comment} from "../comment";
-import data from "../../data"
 import {AddCommentForm} from "../addcomment-form";
+import {Api} from "../../utils/api";
+import {CommentItem} from "../../utils/api/types";
+import {useAppSelector} from "../../redux/hooks";
+import {selectUserData} from "../../redux/slices/user";
+import {useComments} from "../../hooks/useComments";
 
-export const PostComments:React.FC = () => {
+interface PostCommentsProps {
+    postId: number
+}
+
+export const PostComments:React.FC<PostCommentsProps> = ({postId}) => {
+    const auth = useAppSelector(selectUserData)
     const [activeTab, setActiveTab] = React.useState(0);
-    const items = data.comments[activeTab === 0 ? 'popular' : 'new'];
+    const {comments, setComments} = useComments(postId)
+
+    const onAddComment = (obj: CommentItem) => {
+        setComments((prev) => [...prev, obj]);
+    };
+
+    const onRemoveComment = (id: number) => {
+        setComments((prev) => prev.filter((obj) => obj.id !== id));
+    };
+
     return (
         <Paper className="mt-40 p-30" elevation={0}>
             <div className="container">
@@ -18,9 +36,16 @@ export const PostComments:React.FC = () => {
                     <Tab label="По порядку" />
                 </Tabs>
                 <Divider className="mb-20"/>
-                <AddCommentForm/>
+                {auth && <AddCommentForm onAdd={onAddComment} postId={postId}/>}
                 {
-                    items.map(obj => <Comment key={obj.id} created={obj.created} user={obj.user} text={obj.text}/>)
+                    comments.map((obj:CommentItem) => <Comment
+                        key={obj.id}
+                        id={obj.id}
+                        createdAt={obj.createdAt}
+                        user={obj.user}
+                        text={obj.text}
+                        currUser={auth?.id}
+                        onRemove={onRemoveComment}/>)
                 }
             </div>
         </Paper>

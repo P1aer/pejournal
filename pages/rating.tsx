@@ -10,8 +10,15 @@ import {
     TableRow, Button
 } from "@material-ui/core";
 import {FollowButton} from "../components/follow-button";
+import {Api} from "../utils/api";
+import {ResponseUser} from "../utils/api/types";
 
-const Home: NextPage = () => {
+interface RatingProps {
+    users: ResponseUser[];
+}
+
+
+const Home: NextPage<RatingProps> = ({users}) => {
     return (
         <MainLayout>
             <Paper className="pl-20 pt-20 pr-20 mb-20" elevation={0}>
@@ -40,15 +47,18 @@ const Home: NextPage = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        <TableRow>
-                            <TableCell component="th" scope="row">
-                                <span className="mr-15">1</span>Вася Пупкин
-                            </TableCell>
-                            <TableCell align="right">540</TableCell>
-                            <TableCell align="right">
-                                <FollowButton />
-                            </TableCell>
-                        </TableRow>
+                        {users.map((obj) => (
+                            <TableRow key={obj.id}>
+                                <TableCell component="th" scope="row">
+                                    <span className="mr-15">{obj.id}</span>
+                                    {obj.name}
+                                </TableCell>
+                                <TableCell align="right">{obj.commentsCount * 2}</TableCell>
+                                <TableCell align="right">
+                                    <FollowButton />
+                                </TableCell>
+                            </TableRow>
+                        ))}
                     </TableBody>
                 </Table>
 
@@ -56,5 +66,24 @@ const Home: NextPage = () => {
         </MainLayout>
     )
 }
+export const getServerSideProps = async () => {
+    try {
+        const users = await Api().user.getAll();
+        return {
+            props: {
+                users,
+            },
+        };
+    } catch (err) {
+        console.log(err);
+    }
+    return {
+        props: {
+            users: null,
+        },
+    };
+};
+
+
 
 export default Home

@@ -1,27 +1,21 @@
 import React from 'react';
 import styles from './side-comment.module.scss';
 import Link from 'next/link';
+import {PostItem, ResponseUser} from "../../utils/api/types";
+import {Avatar} from "@material-ui/core";
 
 interface CommentItemProps {
-    user: {
-        id: number;
-        name: string;
-    };
+    user: ResponseUser;
     text: string;
-    post: {
-        id: number;
-        title: string;
-    };
+    post: PostItem;
+
 }
 
 export const CommentItem: React.FC<CommentItemProps> = ({ user, text, post }) => {
     return (
         <div className={styles.commentItem}>
             <div className={styles.userInfo}>
-                <img
-                    src="https://leonardo.osnova.io/598fc957-a3f6-598c-b6f9-a033c3941d12/-/scale_crop/64x64/-/format/webp/"
-                    alt="U  ser avatar"
-                />
+                <Avatar style={{ marginRight: 10 }}>{user.name[0]}</Avatar>
                 <Link href={`/profile/${user.id}`}>
                     <a>
                         <b>{user.name}</b>
