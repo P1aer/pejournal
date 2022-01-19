@@ -2,7 +2,7 @@ import React from 'react';
 import {Typography, IconButton, MenuItem, Menu, Avatar} from '@material-ui/core';
 import MoreIcon from '@material-ui/icons/MoreHorizOutlined';
 
-import styles from './Comment.module.scss';
+import styles from './comment.module.scss';
 import {ResponseUser} from "../../utils/api/types";
 import {Api} from "../../utils/api";
 
