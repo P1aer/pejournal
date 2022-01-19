@@ -2,13 +2,11 @@ import React, {FC} from "react";
 import {Paper, Button, IconButton, Avatar, List, ListItem} from "@material-ui/core"
 import Link from 'next/link';
 import SearchIcon from "@material-ui/icons/Search"
-import SmsOutlinedIcon from "@material-ui/icons/SmsOutLined"
 import MenuIcon from "@material-ui/icons/Menu"
 import { ExpandMoreOutlined as ArrowIcon} from "@material-ui/icons"
-import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone'
 import styles from "./header.module.scss"
 import {AuthDialog} from "../auth-dialog";
-import  {AccountCircleOutlined} from "@material-ui/icons"
+import  {AccountCircleOutlined, SmsOutlined, NotificationsNone} from "@material-ui/icons"
 import {useAppSelector} from "../../redux/hooks";
 import {selectUserData} from "../../redux/slices/user";
 import {PostItem} from "../../utils/api/types";
@@ -91,10 +89,10 @@ const Header:FC = () => {
             </div>
             <div className="d-flex align-center">
             <IconButton>
-                <SmsOutlinedIcon/>
+                <SmsOutlined/>
             </IconButton>
             <IconButton>
-                <NotificationsNoneIcon/>
+                <NotificationsNone/>
             </IconButton>
                 { userDate ? <Link href={"/profile/1"}>
                     <a className="d-flex align-center">
