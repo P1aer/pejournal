@@ -43,8 +43,9 @@ MyApp.getInitialProps = wrapper.getInitialAppProps( store=> async( {ctx, Compone
     } catch (e) {
         console.log(e)
     }
+
     return {
-        pageProps: {
+        pageProps: {// @ts-ignore
             ...(Component.getInitialProps ? await Component.getInitialProps({ ctx, store}): {}),
         }
     }

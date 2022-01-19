@@ -39,13 +39,15 @@ export const WriteForm: React.FC<WriteFormProps> = ({data}) => {
         }
 
     }
-
     return (
         <div>
             <Input classes={{ root: styles.titleField }} placeholder="Заголовок" value={title}
             onChange={e =>setTitle(e.target.value)}/>
             <div className={styles.editor}>
-                <Editor initialBlocks={data?.body} onChangeBlocks={(bl) => setBlocks(bl)}/>
+                {
+                    // @ts-ignore
+                    <Editor initialBlocks={data?.body} onChangeBlocks={(bl) => setBlocks(bl)}/>
+                }
             </div>
             <Button disabled={load || !blocks.length || !title} onClick={onSubmit} variant="contained" color="primary">
                 {!data ? 'Опубликовать' : "Сохранить"}

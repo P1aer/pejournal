@@ -16,7 +16,7 @@ export const Editor: React.FC<EditorProps> = ( { onChangeBlocks, initialBlocks }
                onChangeBlocks(blocks)
             },
             data: {
-                blocks: initialBlocks
+                blocks: initialBlocks || []
             }
         });
 
